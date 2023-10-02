@@ -1,75 +1,86 @@
-import { Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 
 export default function App() {
     const [resultado, setResultado] = useState(0);
     const [operacion, setOperacion] = useState("");
-    const [num1, setNum1] = useState("");
-    const [num2, setNum2] = useState("");
+    const [num1, setNum1] = useState();
+    const [num2, setNum2] = useState();
+
     const onHandlePress = (tecla) => {
         if (isNaN(tecla)) {
-            switch (tecla) {
-                case "suma":
-                    suma();
-                    break;
-                default:
-                    break;
+            if (tecla === "=") {
+                return setResultado(realizarOperacion());
             }
+            if (tecla === "C") {
+                setNum1("");
+                setNum2("");
+                setOperacion("");
+                setResultado(0);
+                return;
+            }
+            if (tecla === ",") {
+                if (operacion === "") {
+                    setNum1(num1 + tecla);
+                    setResultado(num1 + tecla);
+                    return;
+                }
+                setNum2(num2 + tecla);
+                setResultado(num2 + tecla);
+                return;
+            }
+            setOperacion(tecla);
             return;
         }
-        if (num1 != "") {
-            setNum2(tecla);
-            setResultado(tecla);
+        if (operacion === "") {
+            setNum1(num1 + tecla);
+            setResultado(num1 + tecla);
             return;
         }
-        setNum1(tecla);
-        setResultado(tecla);
+        setNum2(num2 + tecla);
+        setResultado(num2 + tecla);
     };
-    const suma = () => {
-        return setResultado(num1 + num2);
+
+    const realizarOperacion = () => {
+        if (operaciones[operacion]) {
+            setNum1(parseFloat(num1));
+            if (num2 !== "") {
+                setNum2(parseFloat(num2));
+                return operaciones[operacion]();
+            } else {
+                return operaciones[operacion]();
+            }
+        }
+        return 0;
     };
-    const resta = (num1, num2) => {
-        return num1 + num2;
+
+    const operaciones = {
+        "+": () => {
+            const num1Real = parseFloat(num1);
+            const num2Real = parseFloat(num2);
+            return num1Real + num2Real;
+        },
+        "-": () => num1 - num2,
+        x: () => num1 * num2,
+        "/": () => num1 / num2,
+        "√": () => Math.sqrt(num1),
+        sen: () => Math.sin(num1),
+        cos: () => Math.cos(num1),
+        tan: () => Math.tan(num1),
+        In: () => Math.log(num1),
+        log: () => Math.log10(num1),
+        pi: () => Math.PI,
+        rad: () => (num1 * Math.PI) / 180,
+        "1/X": () => 1 / num1,
+        "!": () => {
+            let resultado = 1;
+            for (let i = 2; i <= num1; i++) {
+                resultado *= i;
+            }
+            return resultado;
+        },
     };
-    const multiplicacion = (num1, num2) => {
-        return num1 + num2;
-    };
-    const division = (num1, num2) => {
-        return num1 + num2;
-    };
-    const inversa = (num1, num2) => {
-        return num1 + num2;
-    };
-    const factorial = (num1, num2) => {
-        return num1 + num2;
-    };
-    const raizCuadrada = (num1, num2) => {
-        return num1 + num2;
-    };
-    const logaritmoNeperiano = (num1, num2) => {
-        return num1 + num2;
-    };
-    const lagoritmoBase10 = (num1, num2) => {
-        return num1 + num2;
-    };
-    const pi = (num1, num2) => {
-        return num1 + num2;
-    };
-    const rad = (num1, num2) => {
-        return num1 + num2;
-    };
-    const deg = (num1, num2) => {
-        return num1 + num2;
-    };
-    const sen = (num1, num2) => {
-        return num1 + num2;
-    };
-    const cos = (num1, num2) => {
-        return num1 + num2;
-    };
-    const tan = (num1, num2) => {
-        return num1 + num2;
-    };
+
     return (
         <View
             style={{
@@ -93,7 +104,14 @@ export default function App() {
                         borderWidth: 1,
                     }}
                 >
-                    <Text style={{ fontSize: 50, textAlign: "right", flex: 1 }}>
+                    <Text
+                        style={{
+                            fontSize: 50,
+                            textAlign: "right",
+                            flex: 1,
+                            maxLength: 10,
+                        }}
+                    >
                         {resultado}
                     </Text>
                 </View>
@@ -101,15 +119,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("sen")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>sen</Text>
                         </TouchableOpacity>
@@ -117,15 +130,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("cos")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>cos</Text>
                         </TouchableOpacity>
@@ -133,15 +141,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("tan")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>tan</Text>
                         </TouchableOpacity>
@@ -149,15 +152,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("deg")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>deg</Text>
                         </TouchableOpacity>
@@ -167,15 +165,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("ln")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>ln</Text>
                         </TouchableOpacity>
@@ -183,15 +176,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("log")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>log</Text>
                         </TouchableOpacity>
@@ -199,15 +187,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("pi")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>&Pi;</Text>
                         </TouchableOpacity>
@@ -215,15 +198,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("rad")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>rad</Text>
                         </TouchableOpacity>
@@ -233,15 +211,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("1/X")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>1/X</Text>
                         </TouchableOpacity>
@@ -249,15 +222,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("!")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>!</Text>
                         </TouchableOpacity>
@@ -265,15 +233,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("√")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>√</Text>
                         </TouchableOpacity>
@@ -281,15 +244,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("/")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>/</Text>
                         </TouchableOpacity>
@@ -299,15 +257,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress(7)}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "blue",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "blue" },
+                            ]}
                         >
                             <Text>7</Text>
                         </TouchableOpacity>
@@ -315,15 +268,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress(8)}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "blue",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "blue" },
+                            ]}
                         >
                             <Text>8</Text>
                         </TouchableOpacity>
@@ -331,15 +279,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress(9)}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "blue",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "blue" },
+                            ]}
                         >
                             <Text>9</Text>
                         </TouchableOpacity>
@@ -347,15 +290,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("x")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>x</Text>
                         </TouchableOpacity>
@@ -365,15 +303,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress(4)}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "blue",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "blue" },
+                            ]}
                         >
                             <Text>4</Text>
                         </TouchableOpacity>
@@ -381,15 +314,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress(5)}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "blue",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "blue" },
+                            ]}
                         >
                             <Text>5</Text>
                         </TouchableOpacity>
@@ -397,15 +325,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress(6)}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "blue",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "blue" },
+                            ]}
                         >
                             <Text>6</Text>
                         </TouchableOpacity>
@@ -413,15 +336,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("-")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>-</Text>
                         </TouchableOpacity>
@@ -431,15 +349,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress(1)}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "blue",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "blue" },
+                            ]}
                         >
                             <Text>1</Text>
                         </TouchableOpacity>
@@ -447,15 +360,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress(2)}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "blue",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "blue" },
+                            ]}
                         >
                             <Text>2</Text>
                         </TouchableOpacity>
@@ -463,15 +371,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress(3)}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "blue",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "blue" },
+                            ]}
                         >
                             <Text>3</Text>
                         </TouchableOpacity>
@@ -479,15 +382,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("+")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>+</Text>
                         </TouchableOpacity>
@@ -497,15 +395,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("C")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>C</Text>
                         </TouchableOpacity>
@@ -513,15 +406,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress(0)}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "blue",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "blue" },
+                            ]}
                         >
                             <Text>0</Text>
                         </TouchableOpacity>
@@ -529,15 +417,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress(",")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>,</Text>
                         </TouchableOpacity>
@@ -545,15 +428,10 @@ export default function App() {
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
                             onPress={() => onHandlePress("=")}
-                            style={{
-                                borderRadius: 8,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                textAlignVertical: "center",
-                                width: 80,
-                                height: 80,
-                                backgroundColor: "gray",
-                            }}
+                            style={[
+                                styles.container,
+                                { backgroundColor: "gray" },
+                            ]}
                         >
                             <Text>=</Text>
                         </TouchableOpacity>
@@ -563,3 +441,13 @@ export default function App() {
         </View>
     );
 }
+const styles = StyleSheet.create({
+    container: {
+        borderRadius: 8,
+        justifyContent: "center",
+        alignItems: "center",
+        textAlignVertical: "center",
+        width: 80,
+        height: 80,
+    },
+});
