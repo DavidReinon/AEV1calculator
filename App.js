@@ -44,100 +44,97 @@ export default function App() {
     };
 
     const realizarOperacion = () => {
-        const operacionEncontrada = operaciones.find(
-            (unaOperacion) => unaOperacion.simbolo === operacion
+        const operacionEncontrada = teclas.find(
+            (unaOperacion) => unaOperacion.valor === operacion
         );
         if (operacionEncontrada) {
             if (num2 !== "") {
                 return operacionEncontrada.metodo();
             } else {
-                return operacionEncontrada.metodoSinNum2(num1);
+                return operacionEncontrada.metodo();
             }
         }
         return 0;
     };
 
-    const operaciones = [
+    const teclas = [
+        { valor: 1, color: "blue" },
+        { valor: 2, color: "blue" },
+        { valor: 3, color: "blue" },
+        { valor: 4, color: "blue" },
+        { valor: 5, color: "blue" },
+        { valor: 6, color: "blue" },
+        { valor: 7, color: "blue" },
+        { valor: 8, color: "blue" },
+        { valor: 9, color: "blue" },
+        { valor: 0, color: "blue" },
         {
             metodo: () => {
                 const num1Real = parseFloat(num1);
                 const num2Real = parseFloat(num2);
                 return num1Real + num2Real;
             },
-            metodoSinNum2: (num1Real) => num1Real,
-            simbolo: "+",
+            valor: "+",
             color: "gray",
         },
         {
             metodo: () => num1 - num2,
-            metodoSinNum2: (num1Real) => num1Real,
-            simbolo: "-",
+            valor: "-",
             color: "gray",
         },
         {
             metodo: () => num1 * num2,
-            metodoSinNum2: (num1Real) => num1Real,
-            simbolo: "x",
+            valor: "x",
             color: "gray",
         },
         {
             metodo: () => num1 / num2,
-            metodoSinNum2: (num1Real) => num1Real,
-            simbolo: "/",
+            valor: "/",
             color: "gray",
         },
         {
             metodo: () => Math.sqrt(num1),
-            metodoSinNum2: (num1Real) => num1Real,
-            simbolo: "√",
+            valor: "√",
             color: "gray",
         },
         {
             metodo: () => Math.sin(num1),
-            metodoSinNum2: (num1Real) => Math.sin(num1Real),
-            simbolo: "sen",
+            valor: "sen",
             color: "gray",
         },
         {
             metodo: () => Math.cos(num1),
-            metodoSinNum2: (num1Real) => Math.cos(num1Real),
-            simbolo: "cos",
+            valor: "cos",
             color: "gray",
         },
         {
             metodo: () => Math.tan(num1),
-            metodoSinNum2: (num1Real) => Math.tan(num1Real),
-            simbolo: "tan",
+            valor: "tan",
             color: "gray",
         },
         {
             metodo: () => Math.log(num1),
-            metodoSinNum2: (num1Real) => Math.log(num1Real),
-            simbolo: "In",
+            valor: "In",
             color: "gray",
         },
         {
             metodo: () => Math.log10(num1),
-            metodoSinNum2: (num1Real) => Math.log10(num1Real),
-            simbolo: "log",
+            valor: "log",
             color: "gray",
         },
         {
             metodo: () => Math.PI,
-            metodoSinNum2: (num1Real) => Math.PI,
-            simbolo: "&Pi;",
+            valor: "&Pi;",
             color: "gray",
         },
         {
             metodo: () => (num1 * Math.PI) / 180,
-            metodoSinNum2: (num1Real) => (num1Real * Math.PI) / 180,
-            simbolo: "rad",
+            valor: "rad",
             color: "gray",
         },
         {
             metodo: () => 1 / num1,
-            metodoSinNum2: (num1Real) => 1 / num1Real,
-            simbolo: "1/X",
+            valor: "1/X",
             color: "gray",
         },
         {
@@ -148,14 +145,7 @@ export default function App() {
                 }
                 return resultado;
             },
-            metodoSinNum2: (num1Real) => {
-                let resultado = 1;
-                for (let i = 2; i <= num1Real; i++) {
-                    resultado *= i;
-                }
-                return resultado;
-            },
-            simbolo: "!",
+            valor: "!",
             color: "gray",
         },
     ];
@@ -193,328 +183,31 @@ export default function App() {
                         {resultado}
                     </Text>
                 </View>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("sen")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
+                {teclas.map((element, index) => {
+                    let estiloFila, cierreEstiloFila;
+                    if (index % 4 === 0) {
+                        estiloFila = { flexDirection: "row" };
+                        cierreEstiloFila = "";
+                    } else cierreEstiloFila = "</View>";
+                    return (
+                        <View style={estiloFila}>
+                        <View
+                            key={index.toString()}
+                            style={{ padding: 3 }}
                         >
-                            <Text>sen</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("cos")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>cos</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("tan")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>tan</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("deg")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>deg</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("ln")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>ln</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("log")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>log</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("&Pi;")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>&Pi;</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("rad")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>rad</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("1/X")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>1/X</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("!")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>!</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("√")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>√</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("/")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>/</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress(7)}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "blue" },
-                            ]}
-                        >
-                            <Text>7</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress(8)}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "blue" },
-                            ]}
-                        >
-                            <Text>8</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress(9)}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "blue" },
-                            ]}
-                        >
-                            <Text>9</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("x")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>x</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress(4)}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "blue" },
-                            ]}
-                        >
-                            <Text>4</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress(5)}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "blue" },
-                            ]}
-                        >
-                            <Text>5</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress(6)}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "blue" },
-                            ]}
-                        >
-                            <Text>6</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("-")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>-</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress(1)}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "blue" },
-                            ]}
-                        >
-                            <Text>1</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress(2)}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "blue" },
-                            ]}
-                        >
-                            <Text>2</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress(3)}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "blue" },
-                            ]}
-                        >
-                            <Text>3</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("+")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>+</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("C")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>C</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress(0)}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "blue" },
-                            ]}
-                        >
-                            <Text>0</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress(",")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>,</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 3 }}>
-                        <TouchableOpacity
-                            onPress={() => onHandlePress("=")}
-                            style={[
-                                styles.container,
-                                { backgroundColor: "gray" },
-                            ]}
-                        >
-                            <Text>=</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                            <TouchableOpacity
+                                onPress={() => onHandlePress(element.valor)}
+                                style={[
+                                    styles.container,
+                                    { backgroundColor: element.color },
+                                ]}
+                            >
+                                <Text>{element.valor}</Text>
+                            </TouchableOpacity>
+                        </View>
+                        {cierreEstiloFila}
+                    );
+                })}
             </View>
         </View>
     );
