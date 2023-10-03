@@ -44,42 +44,121 @@ export default function App() {
     };
 
     const realizarOperacion = () => {
-        if (operaciones[operacion]) {
+        const operacionEncontrada = operaciones.find(
+            (unaOperacion) => unaOperacion.simbolo === operacion
+        );
+        if (operacionEncontrada) {
             if (num2 !== "") {
-                return operaciones[operacion]();
+                return operacionEncontrada.metodo();
             } else {
-                return operaciones[operacion]();
+                return operacionEncontrada.metodoSinNum2(num1);
             }
         }
         return 0;
     };
 
-    const operaciones = {
-        "+": () => {
-            const num1Real = parseFloat(num1);
-            const num2Real = parseFloat(num2);
-            return num1Real + num2Real;
+    const operaciones = [
+        {
+            metodo: () => {
+                const num1Real = parseFloat(num1);
+                const num2Real = parseFloat(num2);
+                return num1Real + num2Real;
+            },
+            metodoSinNum2: (num1Real) => num1Real,
+            simbolo: "+",
+            color: "gray",
         },
-        "-": () => num1 - num2,
-        x: () => num1 * num2,
-        "/": () => num1 / num2,
-        "√": () => Math.sqrt(num1),
-        sen: () => Math.sin(num1),
-        cos: () => Math.cos(num1),
-        tan: () => Math.tan(num1),
-        In: () => Math.log(num1),
-        log: () => Math.log10(num1),
-        pi: () => Math.PI,
-        rad: () => (num1 * Math.PI) / 180,
-        "1/X": () => 1 / num1,
-        "!": () => {
-            let resultado = 1;
-            for (let i = 2; i <= num1; i++) {
-                resultado *= i;
-            }
-            return resultado;
+        {
+            metodo: () => num1 - num2,
+            metodoSinNum2: (num1Real) => num1Real,
+            simbolo: "-",
+            color: "gray",
         },
-    };
+        {
+            metodo: () => num1 * num2,
+            metodoSinNum2: (num1Real) => num1Real,
+            simbolo: "x",
+            color: "gray",
+        },
+        {
+            metodo: () => num1 / num2,
+            metodoSinNum2: (num1Real) => num1Real,
+            simbolo: "/",
+            color: "gray",
+        },
+        {
+            metodo: () => Math.sqrt(num1),
+            metodoSinNum2: (num1Real) => num1Real,
+            simbolo: "√",
+            color: "gray",
+        },
+        {
+            metodo: () => Math.sin(num1),
+            metodoSinNum2: (num1Real) => Math.sin(num1Real),
+            simbolo: "sen",
+            color: "gray",
+        },
+        {
+            metodo: () => Math.cos(num1),
+            metodoSinNum2: (num1Real) => Math.cos(num1Real),
+            simbolo: "cos",
+            color: "gray",
+        },
+        {
+            metodo: () => Math.tan(num1),
+            metodoSinNum2: (num1Real) => Math.tan(num1Real),
+            simbolo: "tan",
+            color: "gray",
+        },
+        {
+            metodo: () => Math.log(num1),
+            metodoSinNum2: (num1Real) => Math.log(num1Real),
+            simbolo: "In",
+            color: "gray",
+        },
+        {
+            metodo: () => Math.log10(num1),
+            metodoSinNum2: (num1Real) => Math.log10(num1Real),
+            simbolo: "log",
+            color: "gray",
+        },
+        {
+            metodo: () => Math.PI,
+            metodoSinNum2: (num1Real) => Math.PI,
+            simbolo: "&Pi;",
+            color: "gray",
+        },
+        {
+            metodo: () => (num1 * Math.PI) / 180,
+            metodoSinNum2: (num1Real) => (num1Real * Math.PI) / 180,
+            simbolo: "rad",
+            color: "gray",
+        },
+        {
+            metodo: () => 1 / num1,
+            metodoSinNum2: (num1Real) => 1 / num1Real,
+            simbolo: "1/X",
+            color: "gray",
+        },
+        {
+            metodo: () => {
+                let resultado = 1;
+                for (let i = 2; i <= num1; i++) {
+                    resultado *= i;
+                }
+                return resultado;
+            },
+            metodoSinNum2: (num1Real) => {
+                let resultado = 1;
+                for (let i = 2; i <= num1Real; i++) {
+                    resultado *= i;
+                }
+                return resultado;
+            },
+            simbolo: "!",
+            color: "gray",
+        },
+    ];
 
     return (
         <View
@@ -185,7 +264,7 @@ export default function App() {
                     </View>
                     <View style={{ padding: 3 }}>
                         <TouchableOpacity
-                            onPress={() => onHandlePress("pi")}
+                            onPress={() => onHandlePress("&Pi;")}
                             style={[
                                 styles.container,
                                 { backgroundColor: "gray" },
