@@ -4,13 +4,13 @@ import React, { useState } from "react";
 export default function App() {
     const [resultado, setResultado] = useState(0);
     const [operacion, setOperacion] = useState("");
-    const [num1, setNum1] = useState();
-    const [num2, setNum2] = useState();
+    const [num1, setNum1] = useState("");
+    const [num2, setNum2] = useState("");
 
     const onHandlePress = (tecla) => {
         if (isNaN(tecla)) {
             if (tecla === "=") {
-                return setResultado(realizarOperacion());
+                return setResultado(realizarOperacion().toFixed(11));
             }
             if (tecla === "C") {
                 setNum1("");
@@ -21,12 +21,14 @@ export default function App() {
             }
             if (tecla === ",") {
                 if (operacion === "") {
-                    setNum1(num1 + tecla);
-                    setResultado(num1 + tecla);
+                    if (num1.includes(".")) return;
+                    setNum1(num1 + ".");
+                    setResultado(num1 + ".");
                     return;
                 }
-                setNum2(num2 + tecla);
-                setResultado(num2 + tecla);
+                if (num2.includes(".")) return;
+                setNum2(num2 + ".");
+                setResultado(num2 + ".");
                 return;
             }
             setOperacion(tecla);
@@ -43,9 +45,7 @@ export default function App() {
 
     const realizarOperacion = () => {
         if (operaciones[operacion]) {
-            setNum1(parseFloat(num1));
             if (num2 !== "") {
-                setNum2(parseFloat(num2));
                 return operaciones[operacion]();
             } else {
                 return operaciones[operacion]();
@@ -109,7 +109,6 @@ export default function App() {
                             fontSize: 50,
                             textAlign: "right",
                             flex: 1,
-                            maxLength: 10,
                         }}
                     >
                         {resultado}
@@ -448,6 +447,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         textAlignVertical: "center",
         width: 80,
-        height: 80,
+        height: 60, //Altura emulador movil
     },
 });
