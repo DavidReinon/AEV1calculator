@@ -184,28 +184,30 @@ export default function App() {
                     </Text>
                 </View>
                 {teclas.map((element, index) => {
-                    let estiloFila, cierreEstiloFila;
+                    let viewEstiloFila, cierreEstiloFila;
                     if (index % 4 === 0) {
-                        estiloFila = { flexDirection: "row" };
+                        viewEstiloFila = "<View style={ flexDirection: 'row' }";
                         cierreEstiloFila = "";
-                    } else cierreEstiloFila = "</View>";
+                    } else {
+                        viewEstiloFila = "";
+                        cierreEstiloFila = "</View>";
+                    }
                     return (
-                        <View style={estiloFila}>
-                        <View
-                            key={index.toString()}
-                            style={{ padding: 3 }}
-                        >
-                            <TouchableOpacity
-                                onPress={() => onHandlePress(element.valor)}
-                                style={[
-                                    styles.container,
-                                    { backgroundColor: element.color },
-                                ]}
-                            >
-                                <Text>{element.valor}</Text>
-                            </TouchableOpacity>
-                        </View>
-                        {cierreEstiloFila}
+                        { viewEstiloFila },
+                        (
+                            <View key={index.toString()} style={{ padding: 3 }}>
+                                <TouchableOpacity
+                                    onPress={() => onHandlePress(element.valor)}
+                                    style={[
+                                        styles.container,
+                                        { backgroundColor: element.color },
+                                    ]}
+                                >
+                                    <Text>{element.valor}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        ),
+                        { cierreEstiloFila }
                     );
                 })}
             </View>
