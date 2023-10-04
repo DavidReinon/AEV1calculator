@@ -58,45 +58,6 @@ export default function App() {
     };
 
     const teclas = [
-        { valor: 1, color: "blue" },
-        { valor: 2, color: "blue" },
-        { valor: 3, color: "blue" },
-        { valor: 4, color: "blue" },
-        { valor: 5, color: "blue" },
-        { valor: 6, color: "blue" },
-        { valor: 7, color: "blue" },
-        { valor: 8, color: "blue" },
-        { valor: 9, color: "blue" },
-        { valor: 0, color: "blue" },
-        {
-            metodo: () => {
-                const num1Real = parseFloat(num1);
-                const num2Real = parseFloat(num2);
-                return num1Real + num2Real;
-            },
-            valor: "+",
-            color: "gray",
-        },
-        {
-            metodo: () => num1 - num2,
-            valor: "-",
-            color: "gray",
-        },
-        {
-            metodo: () => num1 * num2,
-            valor: "x",
-            color: "gray",
-        },
-        {
-            metodo: () => num1 / num2,
-            valor: "/",
-            color: "gray",
-        },
-        {
-            metodo: () => Math.sqrt(num1),
-            valor: "√",
-            color: "gray",
-        },
         {
             metodo: () => Math.sin(num1),
             valor: "sen",
@@ -113,6 +74,11 @@ export default function App() {
             color: "gray",
         },
         {
+            metodo: () => (num1 * 180) / Math.PI,
+            valor: "deg",
+            color: "gray",
+        },
+        {
             metodo: () => Math.log(num1),
             valor: "In",
             color: "gray",
@@ -124,7 +90,7 @@ export default function App() {
         },
         {
             metodo: () => Math.PI,
-            valor: "&Pi;",
+            valor: "Pi",
             color: "gray",
         },
         {
@@ -148,6 +114,48 @@ export default function App() {
             valor: "!",
             color: "gray",
         },
+        {
+            metodo: () => Math.sqrt(num1),
+            valor: "√",
+            color: "gray",
+        },
+        {
+            metodo: () => num1 / num2,
+            valor: "/",
+            color: "gray",
+        },
+        { valor: 7, color: "blue" },
+        { valor: 8, color: "blue" },
+        { valor: 9, color: "blue" },
+        {
+            metodo: () => num1 * num2,
+            valor: "x",
+            color: "gray",
+        },
+        { valor: 4, color: "blue" },
+        { valor: 5, color: "blue" },
+        { valor: 6, color: "blue" },
+        {
+            metodo: () => num1 - num2,
+            valor: "-",
+            color: "gray",
+        },
+        { valor: 1, color: "blue" },
+        { valor: 2, color: "blue" },
+        { valor: 3, color: "blue" },
+        {
+            metodo: () => {
+                const num1Real = parseFloat(num1);
+                const num2Real = parseFloat(num2);
+                return num1Real + num2Real;
+            },
+            valor: "+",
+            color: "gray",
+        },
+        { valor: "C", color: "gray" },
+        { valor: 0, color: "blue" },
+        { valor: ",", color: "gray" },
+        { valor: "=", color: "gray" },
     ];
 
     return (
@@ -156,9 +164,15 @@ export default function App() {
                 justifyContent: "center",
                 alignSelf: "center",
                 marginVertical: 80,
+                marginHorizontal: 30,
             }}
         >
-            <Text style={{ fontSize: 45, fontWeight: "bold" }}>
+            <Text
+                style={{
+                    fontSize: 45,
+                    fontWeight: "bold",
+                }}
+            >
                 Calculadora
             </Text>
 
@@ -183,18 +197,15 @@ export default function App() {
                         {resultado}
                     </Text>
                 </View>
-                {teclas.map((element, index) => {
-                    let viewEstiloFila, cierreEstiloFila;
-                    if (index % 4 === 0) {
-                        viewEstiloFila = "<View style={ flexDirection: 'row' }";
-                        cierreEstiloFila = "";
-                    } else {
-                        viewEstiloFila = "";
-                        cierreEstiloFila = "</View>";
-                    }
-                    return (
-                        { viewEstiloFila },
-                        (
+                <View
+                    style={{
+                        marginTop: 5,
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                    }}
+                >
+                    {teclas.map((element, index) => {
+                        return (
                             <View key={index.toString()} style={{ padding: 3 }}>
                                 <TouchableOpacity
                                     onPress={() => onHandlePress(element.valor)}
@@ -206,10 +217,9 @@ export default function App() {
                                     <Text>{element.valor}</Text>
                                 </TouchableOpacity>
                             </View>
-                        ),
-                        { cierreEstiloFila }
-                    );
-                })}
+                        );
+                    })}
+                </View>
             </View>
         </View>
     );
