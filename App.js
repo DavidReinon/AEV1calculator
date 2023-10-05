@@ -10,10 +10,10 @@ export default function App() {
     const onHandlePress = (tecla) => {
         if (isNaN(tecla)) {
             if (tecla === "=") {
-                return setResultado(realizarOperacion().toFixed(11));
+                return setResultado(realizarOperacion());
             }
             if (comprobacionTeclasEspeciales(tecla)) {
-                return setResultado(realizarOperacion(tecla).toFixed(11));
+                return setResultado(realizarOperacion(tecla));
             }
             if (tecla === "C") {
                 setNum1("");
@@ -53,7 +53,11 @@ export default function App() {
                 unaOperacion.valor === operacion
         );
         if (operacionEncontrada) {
-            return operacionEncontrada.metodo();
+            let numeroFinal = operacionEncontrada.metodo();
+            let longitudNumeroFinal = numeroFinal.toString().length;
+            return numeroFinal.toPrecision(
+                longitudNumeroFinal > 11 ? 11 : longitudNumeroFinal
+            );
         }
         return 0;
     };
