@@ -57,8 +57,7 @@ export default function App() {
             if (numeroFinal.toString().length > 11) {
                 numeroFinal = parseFloat(numeroFinal.toPrecision(11));
             }
-            console.log(numeroFinal.toString());
-            return numeroFinal.toString();
+            return numeroFinal;
         }
         return 0;
     };
