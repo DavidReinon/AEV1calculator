@@ -10,7 +10,10 @@ export default function App() {
     const onHandlePress = (tecla) => {
         if (isNaN(tecla)) {
             if (tecla === "=") {
-                return setResultado(realizarOperacion().toFixed(11));
+                return setResultado(realizarOperacionNormal().toFixed(11));
+            }
+            if (comprobacionTeclasEspeciales(tecla)) {
+                return setResultado(realizarOperacionEspecial(tecla));
             }
             if (tecla === "C") {
                 setNum1("");
@@ -42,19 +45,40 @@ export default function App() {
         setNum2(num2 + tecla);
         setResultado(num2 + tecla);
     };
-
-    const realizarOperacion = () => {
+    const realizarOperacionEspecial = (tecla) => {
+        setOperacion(tecla);
         const operacionEncontrada = teclas.find(
             (unaOperacion) => unaOperacion.valor === operacion
         );
         if (operacionEncontrada) {
-            if (num2 !== "") {
-                return operacionEncontrada.metodo();
-            } else {
-                return operacionEncontrada.metodo();
-            }
+            return operacionEncontrada.metodo();
         }
         return 0;
+    };
+
+    const realizarOperacionNormal = () => {
+        const operacionEncontrada = teclas.find(
+            (unaOperacion) => unaOperacion.valor === operacion
+        );
+        if (operacionEncontrada) {
+            return operacionEncontrada.metodo();
+        }
+        return 0;
+    };
+    const comprobacionTeclasEspeciales = (tecla) => {
+        return (
+            tecla === "sen" ||
+            tecla === "cos" ||
+            tecla === "tan" ||
+            tecla === "deg" ||
+            tecla === "In" ||
+            tecla === "log" ||
+            tecla === "Pi" ||
+            tecla === "rad" ||
+            tecla === "1/X" ||
+            tecla === "!" ||
+            tecla === "√"
+        );
     };
 
     const teclas = [
