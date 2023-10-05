@@ -54,10 +54,11 @@ export default function App() {
         );
         if (operacionEncontrada) {
             let numeroFinal = operacionEncontrada.metodo();
-            let longitudNumeroFinal = numeroFinal.toString().length;
-            return numeroFinal.toPrecision(
-                longitudNumeroFinal > 11 ? 11 : longitudNumeroFinal
-            );
+            if (numeroFinal.toString().length > 11) {
+                numeroFinal = parseFloat(numeroFinal.toPrecision(11));
+            }
+            console.log(numeroFinal.toString());
+            return numeroFinal.toString();
         }
         return 0;
     };
