@@ -15,6 +15,11 @@ export default function App() {
             if (comprobacionTeclasEspeciales(tecla)) {
                 return setResultado(realizarOperacion(tecla));
             }
+            if (tecla === "π") {
+                setNum1(Math.PI);
+                setResultado(Math.PI);
+                return;
+            }
             if (tecla === "C") {
                 setNum1("");
                 setNum2("");
@@ -69,7 +74,6 @@ export default function App() {
             tecla === "deg" ||
             tecla === "In" ||
             tecla === "log" ||
-            tecla === "Pi" ||
             tecla === "rad" ||
             tecla === "1/X" ||
             tecla === "!" ||
@@ -109,8 +113,7 @@ export default function App() {
             color: "gray",
         },
         {
-            metodo: () => Math.PI,
-            valor: "Pi",
+            valor: "π",
             color: "gray",
         },
         {
@@ -251,6 +254,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         textAlignVertical: "center",
         width: 80,
-        height: 60, //Altura emulador movil
+        height: 80,
     },
 });
